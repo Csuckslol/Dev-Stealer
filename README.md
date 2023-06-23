@@ -1,14 +1,18 @@
 # Dev-Stealer
-A simple Cookie logger and Wifi password stealer All with nice `embeds`!
+A all in one info logger!
+
+includes discord token stealing!
 
 
-More updates will be realased soon as possible.
+
+
+More updates will be out as  soon as possible.
 
 We will add Token grabbers and password stealers.
 
 
 
-Made by:21susalt#1700
+Made by:justarandomskid
 
 
 Disclaimer:
